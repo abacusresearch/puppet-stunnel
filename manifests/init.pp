@@ -50,6 +50,11 @@ class stunnel(
   }
 
   if $::osfamily == 'Debian' {
+    file { '/etc/default/stunnel4':
+      ensure  => file,
+      content => template("${module_name}/etc-default-stunnel4.erb"),
+    }
+
     exec { 'enable stunnel':
       command => 'sed -i "s/ENABLED=0/ENABLED=1/" /etc/default/stunnel4',
       path    => [ '/bin', '/usr/bin' ],
