@@ -125,7 +125,7 @@ define stunnel::tun(
     $private_key = undef,
     $ca_file     = undef,
     $crl_file    = undef,
-    $ssl_version = 'TLSv1',
+    $ssl_version = 'TLSv1.2',
     $verify      = '2',
     $chroot,
     $user,
@@ -142,12 +142,15 @@ define stunnel::tun(
   unless $verify == 'default' {
     $ssl_version_real = $ssl_version ? {
       'tlsv1' => 'TLSv1',
+      'tlsv11' => 'TLSv1.1',
+      'tlsv12' => 'TLSv1.2',
+      'tlsv13' => 'TLSv1.3',
       'sslv2' => 'SSLv2',
       'sslv3' => 'SSLv3',
       default => $ssl_version,
     }
 
-    validate_re($ssl_version_real, '^SSLv2$|^SSLv3$|^TLSv1$', 'The option ssl_version must have a value that is either SSLv2, SSLv3, of TLSv1. The default and prefered option is TLSv1. SSLv2 should be avoided.')
+    validate_re($ssl_version_real, '^SSLv2$|^SSLv3$|^TLSv1$|^TLSv1.1$|^TLSv1.2$|^TLSv1.3$', 'The option ssl_version must have a value that is either SSLv2, SSLv3, of TLSv1. The default and prefered option is TLSv1.2. SSLvX should be avoided.')
   }
 
   $client_on = $client ? {
