@@ -150,7 +150,7 @@ define stunnel::tun(
       default => $ssl_version,
     }
 
-    validate_re($ssl_version_real, '^SSLv2$|^SSLv3$|^TLSv1$|^TLSv1.1$|^TLSv1.2$|^TLSv1.3$', 'The option ssl_version must have a value that is either SSLv2, SSLv3, of TLSv1. The default and prefered option is TLSv1.2. SSLvX should be avoided.')
+    assert_type(Pattern[/^SSLv2$|^SSLv3$|^TLSv1$|^TLSv1.1$|^TLSv1.2$|^TLSv1.3$/], $ssl_version_real)
   }
 
   $client_on = $client ? {
